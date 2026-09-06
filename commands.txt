@@ -11,5 +11,8 @@ Command to show system information and the <red>lovely</red> splash-screen.
 The original version was called neofetch, however neofetch was abandoned (and was a bash script 😔).
 fastfetch is written in C by Linus Dierheimer. 
 
-
-
+- ln
+Used to create symbolic or hard links to files or directories.
+<blue>Symbolic</blue>:
+    ln -s [What are we <blue>linking to</blue>?] [Where does the <blue>symlink go</blue>?]
+    ln -s [link to] [link from]

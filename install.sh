@@ -41,43 +41,55 @@ if [ ! -f "$BASHRC_PATH" ]; then
     exit 1
 fi
 
+COMMANDS_TEXT_FILE_PATH="$REPO_PATH/commands.txt"
+
+SYMLINK_PATH=~/.commands.txt
+if [ -L "$SYMLINK_PATH" ]; then
+    current_target="$(readlink "$SYMLINK_PATH")"
+    if [ "$current_target" != "$COMMANDS_TEXT_FILE_PATH" ]; then
+        echo -e "${RED}Error: $SYMLINK_PATH already exists and points to '$current_target'${RESET}"
+        exit 1
+    fi
+else
+    ln -s "$COMMANDS_TEXT_FILE_PATH" "$SYMLINK_PATH"
+    echo -e "${GREEN}Created symlink: $SYMLINK_PATH -> $COMMANDS_TEXT_FILE_PATH${RESET}"
+fi
+
 echo -e -n "${BLUE}Do you want to update $BASHRC_PATH? (y/n):${RESET} "
 read choice
 # Default to yes if they press enter
 choice="${choice:-y}"
-case "$choice" in 
-    y|Y ) 
-        ;;
-    n|N ) 
-        echo -e "${GREEN}Finished.${RESET}"
-        exit 1
-        ;;
-    * ) 
-        echo -e "${RED}Invalid choice.${RESET}"
-        exit 1
-        ;;
+case "$choice" in
+y | Y) ;;
+
+n | N)
+    echo -e "${GREEN}Finished.${RESET}"
+    exit 1
+    ;;
+*)
+    echo -e "${RED}Invalid choice.${RESET}"
+    exit 1
+    ;;
 esac
 
 if grep -q "/commando" "$BASHRC_PATH"; then
-    echo -e -n "${RED}found 'commando' in '$BASHRC_PATH'.${RESET} ${BLUE}Are you sure you want to continue? (y/n)${RESET}: " 
+    echo -e -n "${RED}found 'commando' in '$BASHRC_PATH'.${RESET} ${BLUE}Are you sure you want to continue? (y/n)${RESET}: "
     read choice
     choice="${choice:-y}"
-    case "$choice" in 
-        y|Y ) 
-            ;;
-        n|N ) 
-            echo "Finished."
-            exit 1
-            ;;
-        * ) 
-            echo "Invalid choice."
-            exit 1
-            ;;
-    esac
-fi 
+    case "$choice" in
+    y | Y) ;;
 
-# shellcheck disable=SC2034
-COMMANDS_TEXT_FILE_PATH="$REPO_PATH/commands.txt"
+    n | N)
+        echo "Finished."
+        exit 1
+        ;;
+    *)
+        echo "Invalid choice."
+        exit 1
+        ;;
+    esac
+fi
+
 # Multiline command string
 COMMAND_TO_APPEND_TO_BASHRC=$(
     cat <<EOF
@@ -87,13 +99,12 @@ $REPO_PATH/commando "$COMMANDS_TEXT_FILE_PATH"
 EOF
 )
 
-echo "$COMMAND_TO_APPEND_TO_BASHRC" >> "$BASHRC_PATH"
+echo "$COMMAND_TO_APPEND_TO_BASHRC" >>"$BASHRC_PATH"
 echo -e "${GREEN}$BASHRC_PATH updated${RESET}"
-
 
 echo "=========================UPDATED WITH=================================="
 echo -e -n "${GREY}"
-tail -3  $BASHRC_PATH | cat
+tail -3 $BASHRC_PATH | cat
 echo -e -n "${RESET}"
 echo "======================================================================="
 
