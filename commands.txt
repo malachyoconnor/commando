@@ -1,0 +1,11 @@
+// Commands or invocations that you want to remember go below beginning with -.
+// Precede with '//' for comments
+
+- $(( [You can do maths in here]  ))
+
+- fastfetch
+Command to show system information and the lovely splash-screen.
+The original version was called neofetch, it was rename to fastfetch by satan.
+
+
+
