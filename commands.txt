@@ -1,11 +1,15 @@
 // Commands or invocations that you want to remember go below beginning with -.
 // Precede with '//' for comments
+// You can use <red>, <green> or <blue> to add a splash of colour
 
-- $(( [You can do maths in here]  ))
+- $((  ))
+This is a bash construct. Within those walls, MATHS can be performed.
+I.e. <green>$(( 1+1 )) = 2</green>
 
 - fastfetch
-Command to show system information and the lovely splash-screen.
-The original version was called neofetch, it was rename to fastfetch by satan.
+Command to show system information and the <red>lovely</red> splash-screen.
+The original version was called neofetch, however neofetch was abandoned (and was a bash script 😔).
+fastfetch is written in C by Linus Dierheimer. 
 
 
 

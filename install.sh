@@ -88,3 +88,6 @@ echo -e -n "${GREY}"
 tail -3  $BASHRC_PATH | cat
 echo -e -n "${RESET}"
 echo "======================================================================="
+
+# shellcheck source=/home/malachy/.bashrc
+source "$BASHRC_PATH"
