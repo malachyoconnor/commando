@@ -11,11 +11,19 @@ RED='\033[0;31m'
 RESET='\033[0m'
 
 function build_commando() {
-    compile_string="g++ ./commando.cpp -o commando"
-    echo "$compile_string"
-
-    # shellcheck disable=SC2046
-    return $($compile_string)
+    local compilers=("g++" "clang++" "c++")
+    for compiler in "${compilers[@]}"; do
+        if ! command -v "$compiler" &>/dev/null; then
+            continue
+        fi
+        local compile_string="$compiler ./commando.cpp -std=c++20 -o commando"
+        echo "$compile_string"
+        if $compile_string; then
+            return 0
+        fi
+    done
+    echo -e "${RED}No working C++ compiler found (tried: ${compilers[*]})${RESET}"
+    return 1
 }
 
 if build_commando; then
